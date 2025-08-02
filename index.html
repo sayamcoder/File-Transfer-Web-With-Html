@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags: Search Engine ko website samajhne mein madad karte hain -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickShare | Secure & Instant P2P File Transfer</title>
+    <meta name="description" content="Securely share files directly from your browser to any device. No server uploads, no sign-ups. Fast, private, and easy peer-to-peer (P2P) file sharing.">
+    <meta name="keywords" content="file transfer, p2p, peer to peer, share files, secure file sharing, webrtc, direct file transfer, QuickShare">
+    <meta name="author" content="Your Name">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+
+    <!-- Schema.org Markup for SEO: Google ko structured data deta hai -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "QuickShare",
+      "url": "https://your-domain.com/",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web",
+      "description": "A secure and fast peer-to-peer file sharing web application.",
+      "featureList": [
+        "Direct P2P file transfer",
+        "No server uploads for files",
+        "QR Code sharing",
+        "Dark/Light mode",
+        "Drag and Drop interface"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      }
+    }
+    </script>
+
+    <!-- CSS Styles: Website ki design aur layout ke liye -->
+    <style>
+        /* Google Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        /* CSS Variables for theming (Modern approach) */
+        :root {
+            --primary-color: #00aaff;
+            --primary-hover: #0088cc;
+            --background-color: #121212;
+            --surface-color: rgba(30, 30, 30, 0.7);
+            --text-color: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --card-radius: 16px;
+            --transition-speed: 0.3s;
+        }
+
+        body.light-mode {
+            --background-color: #f0f2f5;
+            --surface-color: rgba(255, 255, 255, 0.7);
+            --text-color: #1c1e21;
+            --text-muted: #606770;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Basic Reset and Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 1% 1%, var(--primary-color), transparent 30%), radial-gradient(circle at 99% 99%, var(--primary-color), transparent 40%);
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+        }
+        
+        /* Main container for the app */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 20px;
+            padding: 30px 35px;
+            background: var(--surface-color);
+            border-radius: var(--card-radius);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+            transition: all var(--transition-speed) ease;
+        }
+
+        /* Header Section */
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .logo span {
+            font-weight: 400;
+            color: var(--text-color);
+        }
+
+        /* Dark/Light Mode Toggle Switch */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch {
+            display: inline-block;
+            height: 24px;
+            position: relative;
+            width: 44px;
+        }
+        .theme-switch input {
+            display: none;
+        }
+        .slider {
+            background-color: #333;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 16px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 16px;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        
+        /* Main Upload Area */
+        #upload-container {
+            border: 3px dashed var(--border-color);
+            border-radius: var(--card-radius);
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: border-color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+        }
+        #upload-container.dragover {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 170, 255, 0.1);
+        }
+        #upload-container h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        #upload-container p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        #file-input {
+            display: none;
+        }
+
+        /* Share Link and Progress Section */
+        #share-container {
+            display: none; /* Initially hidden */
+        }
+        .file-info {
+            background-color: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .file-info p {
+            word-break: break-all;
+            margin-bottom: 5px;
+        }
+        .file-info strong {
+            color: var(--text-color);
+        }
+        
+        #qr-code {
+            margin: 20px auto;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            width: fit-content;
+        }
+        #qr-code canvas {
+            display: block;
+        }
+
+        .share-link-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        #share-link {
+            width: 100%;
+            padding: 12px 50px 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.2);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        #copy-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed) ease;
+        }
+        #copy-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Download Button */
+        .download-btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+        }
+        .download-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 170, 255, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            .app-container {
+                margin: 10px;
+                padding: 25px 20px;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            #upload-container h1 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Semantic main container -->
+    <main class="app-container">
+        <!-- Header with logo and theme switcher -->
+        <header>
+            <div class="logo">🚀Quick<span>Share</span></div>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="theme-checkbox">
+                    <input type="checkbox" id="theme-checkbox" />
+                    <div class="slider round"></div>
+                </label>
+            </div>
+        </header>
+
+        <!-- Section 1: File Upload Area (initially visible) -->
+        <section id="upload-container">
+            <h1>Drag & Drop Your File</h1>
+            <p>or click to select</p>
+            <input type="file" id="file-input">
+        </section>
+
+        <!-- Section 2: Share Link Area (initially hidden) -->
+        <section id="share-container">
+            <h2>Your File is Ready to Share!</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">This link works as long as this page is open.</p>
+            
+            <div class="file-info">
+                <p><strong>File:</strong> <span id="file-name"></span></p>
+                <p><strong>Size:</strong> <span id="file-size"></span></p>
+            </div>
+
+            <div id="qr-code"></div>
+
+            <div class="share-link-wrapper">
+                <input type="text" id="share-link" readonly>
+                <button id="copy-btn">Copy</button>
+            </div>
+            
+            <a href="#" id="download-link" class="download-btn" download>Download File</a>
+        </section>
+
+    </main>
+
+    <!-- Footer with credits -->
+    <footer>
+        <p>© 2025 QuickShare. A concept by <a href="#" target="_blank">SayamCoder</a>.</p>
+    </footer>
+
+    <!-- JavaScript libraries and custom script -->
+    <script>
+        // Library: QR Code Generator (by davidshimjs)
+        // Isko yahan include kiya gaya hai taaki external file na ho.
+        var qrcode=function(){"use strict";var t,r={};function n(t){this.mode=e.MODE_8BIT_BYTE,this.data=t,this.parsedData=[];for(var r=0,n=this.data.length;r<n;r++){var i=this.data.charCodeAt(r);i>65535?(this.parsedData.push(240|i>>18&7),this.parsedData.push(128|i>>12&63),this.parsedData.push(128|i>>6&63),this.parsedData.push(128|63&i)):i>2047?(this.parsedData.push(224|i>>12&15),this.parsedData.push(128|i>>6&63),this.parsedData.push(128|63&i)):i>127?(this.parsedData.push(192|i>>6&31),this.parsedData.push(128|63&i)):this.parsedData.push(i)}this.parsedData=this.parsedData.join(""),this.parsedData=unescape(encodeURIComponent(this.parsedData)),this.parsedData=this.parsedData.split("").map(function(t){return t.charCodeAt(0)})}function i(t,r){this.typeNumber=t,this.errorCorrectLevel=r,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function a(t,r){if(void 0===t.length)throw new Error(t.length+"/"+r);for(var e=0;e<t.length&&0==t[e];)e++;this.num=new Array(t.length-e+r);for(var n=0;n<t.length-e;n++)this.num[n]=t[n+e]}function o(t,r){this.glog=function(t){if(t<1)throw new Error("glog("+t+")");return o.LOG_TABLE[t]},this.gexp=function(t){for(;t<0;)t+=255;for(;t>=256;)t-=255;return o.EXP_TABLE[t]},this.EXP_TABLE=new Array(256),this.LOG_TABLE=new Array(256);for(var e=0;e<8;e++)this.EXP_TABLE[e]=1<<e;for(e=8;e<256;e++)this.EXP_TABLE[e]=this.EXP_TABLE[e-4]^this.EXP_TABLE[e-5]^this.EXP_TABLE[e-6]^this.EXP_TABLE[e-8];for(e=0;e<255;e++)this.LOG_TABLE[this.EXP_TABLE[e]]=e}function s(){this.buffer=[],this.length=0,this.write=function(t,r){for(var e=0;e<r;e++)this.buffer.push(t>>r-1-e&1)}}function l(t,r){var n,i="string"==typeof(n=t)?(n=r,new u(t,n)):n,a=document.createElement("canvas");if("undefined"!=typeof G_vmlCanvasManager)G_vmlCanvasManager.initElement(a);else{var o=function(t){for(var r=1;t.typeNumber>r;)r++;t.typeNumber=r};o(i);var s,l,c,h=i.getModuleCount(),g=a;g.width=100,g.height=100,c=g.getContext("2d");var f=document.createElement("div");f.style.position="relative",f.style.height=100+"px",f.style.width=100+"px",f.appendChild(a),s={height:100,width:100},c.clearRect(0,0,100,100);for(var d=0;d<h;d++)for(var v=0;v<h;v++){var p=i.isDark(d,v),m=100/h,w=100/h;c.strokeStyle=p?"#000000":"#ffffff",c.lineWidth=1,c.fillStyle=p?"#000000":"#ffffff",c.fillRect(v*m,d*w,m,w),c.strokeRect(Math.floor(v*m)+.5,Math.floor(d*w)+.5,s.width/h,s.height/h)}return f}var u=function(t,r){var e={};e.text=t,e.width=256,e.height=256,e.colorDark="#000000",e.colorLight="#ffffff",e.correctLevel=i.CorrectLevel.H,"string"==typeof r&&(r={text:r}),r&&function(t,r){for(var e in r)t[e]=r[e]}(e,r),e.text||(e.text=""),function(){o.log(t),r.errorCorrectLevel=i.CorrectLevel.H,o.addData(t),o.make(),this.modules=o.modules,this.moduleCount=o.modules.length,this.isDark=function(t,r){return t<0||this.moduleCount<=t||r<0||this.moduleCount<=r?new Error(t+","+r):this.modules[t][r]}}.call(this);var o=new i(e.correctLevel,e.width,e.height);return o.addData(e.text),o.make(),l(this,e)},e={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8};i.prototype={getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(t,r){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++){this.modules[e]=new Array(this.moduleCount);for(var n=0;n<this.moduleCount;n++)this.modules[e][n]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupPositionAdjustPattern(),this.setupTimingPattern(),this.setupTypeInfo(t,r),this.typeNumber>=7&&this.setupTypeNumber(t),null==this.dataCache&&(this.dataCache=i.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,r)},setupPositionProbePattern:function(t,r){for(var e=-1;e<=7;e++)if(!(t+e<=-1||this.moduleCount<=t+e))for(var n=-1;n<=7;n++)r+n<=-1||this.moduleCount<=r+n||(e>=0&&e<=6&&(0==n||6==n)||n>=0&&n<=6&&(0==e||6==e)||e>=2&&e<=4&&n>=2&&n<=4?this.modules[t+e][r+n]=!0:this.modules[t+e][r+n]=!1)},getBestMaskPattern:function(){for(var t=0,r=0,e=0;e<8;e++){this.makeImpl(!0,e);var n=h.getLostPoint(this);(0==e||t>n)&&(t=n,r=e)}return r},createMovieClip:function(t,r,e){var n=t.createElement("div");n.style.width=this.moduleCount*e+"px",n.style.height=this.moduleCount*e+"px";for(var i=0;i<this.moduleCount;i++)for(var a=0;a<this.moduleCount;a++){var o=t.createElement("div");o.style.width=e+"px",o.style.height=e+"px",o.style.position="absolute",o.style.left=a*e+"px",o.style.top=i*e+"px",o.style.backgroundColor=this.isDark(i,a)?"#000000":"#ffffff",n.appendChild(o)}return n},setupTimingPattern:function(){for(var t=8;t<this.moduleCount-8;t++)null==this.modules[t][6]&&(this.modules[t][6]=t%2==0);for(var r=8;r<this.moduleCount-8;r++)null==this.modules[6][r]&&(this.modules[6][r]=r%2==0)},setupPositionAdjustPattern:function(){for(var t=h.getPatternPosition(this.typeNumber),r=0;r<t.length;r++)for(var e=0;e<t.length;e++){var n=t[r],i=t[e];if(null==this.modules[n][i])for(var a=-2;a<=2;a++)for(var o=-2;o<=2;o++)a==-2||2==a||-2==o||2==o||0==a&&0==o?this.modules[n+a][i+o]=!0:this.modules[n+a][i+o]=!1}},setupTypeNumber:function(t){for(var r=h.getBCHTypeNumber(this.typeNumber),e=0;e<18;e++){var n=!t&&1==(r>>e&1);this.modules[Math.floor(e/3)][e%3+this.moduleCount-8-3]=n}for(e=0;e<18;e++){n=!t&&1==(r>>e&1);this.modules[e%3+this.moduleCount-8-3][Math.floor(e/3)]=n}},setupTypeInfo:function(t,r){for(var e=this.errorCorrectLevel<<3|r,n=h.getBCHTypeInfo(e),i=0;i<15;i++){var a=!t&&1==(n>>i&1);i<6?this.modules[i][8]=a:i<8?this.modules[i+1][8]=a:this.modules[this.moduleCount-15+i][8]=a}for(i=0;i<15;i++){a=!t&&1==(n>>i&1);i<8?this.modules[8][this.moduleCount-i-1]=a:i<9?this.modules[8][15-i-1+1]=a:this.modules[8][15-i-1]=a}this.modules[this.moduleCount-8][8]=!t},addData:function(t){var r=new n(t);this.dataList.push(r),this.dataCache=null},isDark:function(t,r){if(t<0||this.moduleCount<=t||r<0||this.moduleCount<=r)throw new Error(t+","+r);return this.modules[t][r]},mapData:function(t,r){for(var e=0,n=0,i=-1,a=this.moduleCount-1,o=7,s=0,l=this.moduleCount-1;l>0;l-=2)for(6==l&&l--;;){for(var u=0;u<2;u++){if(null==this.modules[a][l-u]){var c=!1;s<t.length&&(c=1==(t[s]>>>o&1));h.getMask(r,a,l-u)&&(c=!c),this.modules[a][l-u]=c,o--,-1==o&&(s++,o=7)}}if((a+=i)<0||this.moduleCount<=a){a-=i,i=-i;break}}}},i.PAD0=236,i.PAD1=17,i.createData=function(t,r,e){for(var n=g.getRSBlocks(t,r),a=new s,o=0;o<e.length;o++){var l=e[o];a.write(l.mode,4),a.write(l.getLength(),h.getLengthInBits(l.mode,t)),l.write(a)}for(var u=0,c=0;c<n.length;c++)u+=n[c].dataCount;if(a.getLengthInBits()>8*u)throw new Error("code length overflow. ("+a.getLengthInBits()+">"+8*u+")");for(a.getLengthInBits()+4<=8*u&&a.write(0,4);a.getLengthInBits()%8!=0;)a.writeBit(!1);for(;;)if(a.getLengthInBits()>=8*u)break;else{if(a.write(i.PAD0,8),a.getLengthInBits()>=8*u)break;a.write(i.PAD1,8)}return i.createBytes(a,n)},i.createBytes=function(t,r){for(var e=0,n=0,i=0,s=new Array(r.length),l=new Array(r.length),u=0;u<r.length;u++){var c=r[u].dataCount,h=r[u].totalCount-c;n=Math.max(n,c),i=Math.max(i,h),s[u]=new Array(c);for(var g=0;g<s[u].length;g++)s[u][g]=255&t.buffer[g+e];e+=c;var f=h.getErrorCorrectPolynomial(h);l[u]=new a(s[u],f.getLength()-1).mod(f).num}for(var d=0,v=[],p=[],m=0;m<r.length;m++)d+=r[m].totalCount;for(m=0;m<n;m++)for(u=0;u<r.length;u++)m<s[u].length&&v.push(s[u][m]);for(m=0;m<i;m++)for(u=0;u<r.length;u++)m<l[u].length&&p.push(l[u][m]);for(var w=new Array(d),y=0;y<v.length;y++)w[y]=v[y];for(y=0;y<p.length;y++)w[v.length+y]=p[y];return w},n.prototype={getLength:function(t){return this.data.length},write:function(t){for(var r=0;r<this.parsedData.length;r++)t.write(this.parsedData[r],8)}},a.prototype={get:function(t){return this.num[t]},getLength:function(){return this.num.length},multiply:function(t){for(var r=new Array(this.getLength()+t.getLength()-1),e=0;e<this.getLength();e++)for(var n=0;n<t.getLength();n++)r[e+n]^=o.gexp(o.glog(this.get(e))+o.glog(t.get(n)));return new a(r)},mod:function(t){if(this.getLength()-t.getLength()<0)return this;for(var r=o.glog(this.get(0))-o.glog(t.get(0)),e=new Array(this.getLength()),n=0;n<this.getLength();n++)e[n]=this.get(n);for(n=0;n<t.getLength();n++)e[n]^=o.gexp(o.glog(t.get(n))+r);return new a(e).mod(t)}},o.EXP_TABLE=new Array(256),o.LOG_TABLE=new Array(256);for(var c=0;c<8;c++)o.EXP_TABLE[c]=1<<c;for(c=8;c<256;c++)o.EXP_TABLE[c]=o.EXP_TABLE[c-4]^o.EXP_TABLE[c-5]^o.EXP_TABLE[c-6]^o.EXP_TABLE[c-8];for(c=0;c<255;c++)o.LOG_TABLE[o.EXP_TABLE[c]]=c;var h={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(t){for(var r=t<<10;h.getBCHDigit(r)-h.getBCHDigit(h.G15)>=0;)r^=h.G15<<h.getBCHDigit(r)-h.getBCHDigit(h.G15);return(t<<10|r)^h.G15_MASK},getBCHTypeNumber:function(t){for(var r=t<<12;h.getBCHDigit(r)-h.getBCHDigit(h.G18)>=0;)r^=h.G18<<h.getBCHDigit(r)-h.getBCHDigit(h.G18);return t<<12|r},getBCHDigit:function(t){for(var r=0;0!=t;)r++,t>>=1;return r},getPatternPosition:function(t){return h.PATTERN_POSITION_TABLE[t-1]},getMask:function(t,r,n){switch(t){case 0:return(r+n)%2==0;case 1:return r%2==0;case 2:return n%3==0;case 3:return(r+n)%3==0;case 4:return(Math.floor(r/2)+Math.floor(n/3))%2==0;case 5:return r*n%2+r*n%3==0;case 6:return(r*n%2+r*n%3)%2==0;case 7:return(r*n%3+(r+n)%2)%2==0;default:throw new Error("bad maskPattern:"+t)}},getLostPoint:function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n++)for(var i=0;i<r;i++){for(var a=0,o=t.isDark(n,i),s=-1;s<=1;s++)if(!(n+s<0||r<=n+s))for(var l=-1;l<=1;l++)i+l<0||r<=i+l||0==s&&0==l||o==t.isDark(n+s,i+l)&&a++;a>5&&(e+=3+a-5)}for(n=0;n<r-1;n++)for(i=0;i<r-1;i++){var u=0;t.isDark(n,i)&&u++,t.isDark(n+1,i)&&u++,t.isDark(n,i+1)&&u++,t.isDark(n+1,i+1)&&u++,0!=u&&4!=u||(e+=3)}for(n=0;n<r;n++)for(i=0;i<r-6;i++)t.isDark(n,i)&&!t.isDark(n,i+1)&&t.isDark(n,i+2)&&t.isDark(n,i+3)&&t.isRead(n,i+4)&&!t.isDark(n,i+5)&&t.isDark(n,i+6)&&(e+=40);for(i=0;i<r;i++)for(n=0;n<r-6;n++)t.isDark(n,i)&&!t.isDark(n+1,i)&&t.isDark(n+2,i)&&t.isDark(n+3,i)&&t.isDark(n+4,i)&&!t.isDark(n+5,i)&&t.isDark(n+6,i)&&(e+=40);for(var c=0,i=0;i<r;i++)for(n=0;n<r;n++)t.isDark(n,i)&&c++;return e+=10*(Math.abs(100*c/r/r-50)/5)},getLengthInBits:function(t,r){if(r>=1&&r<10)switch(t){case e.MODE_NUMBER:return 10;case e.MODE_ALPHA_NUM:return 9;case e.MODE_8BIT_BYTE:return 8;case e.MODE_KANJI:return 8;default:throw new Error("mode:"+t)}else if(r<27)switch(t){case e.MODE_NUMBER:return 12;case e.MODE_ALPHA_NUM:return 11;case e.MODE_8BIT_BYTE:return 16;case e.MODE_KANJI:return 10;default:throw new Error("mode:"+t)}else{if(!(r<41))throw new Error("type:"+r);switch(t){case e.MODE_NUMBER:return 14;case e.MODE_ALPHA_NUM:return 13;case e.MODE_8BIT_BYTE:return 16;case e.MODE_KANJI:return 12;default:throw new Error("mode:"+t)}}}},g={RS_BLOCK_TABLE:[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[4,116,92],[2,58,36,3,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,130,104],[5,58,38,1,59,39],[8,47,20,1,48,21],[7,43,14,2,44,15],[2,142,114],[2,71,45,3,72,46],[10,46,22,1,47,23],[8,42,12,4,43,13],[3,154,124],[4,64,40,5,65,41],[11,36,16],[11,36,12],[5,122,98],[5,61,39,1,62,40],[5,46,22,3,47,23],[11,43,15,5,44,16],[5,135,107],[5,67,41,2,68,42],[5,54,24,1,55,25],[11,45,15,1,46,16],[7,150,120],[5,75,47,1,76,48],[13,45,21,2,46,22],[3,45,15,13,46,16],[1,145,115],[2,72,45,5,73,46],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,109,87],[10,54,34,1,55,35],[9,43,19,4,44,20],[17,37,13],[3,111,89],[3,55,35,5,56,36],[3,45,21,13,46,22],[15,43,15,5,44,16],[13,121,97],[3,54,34,4,55,35],[17,42,18],[17,42,14],[13,121,97],[13,54,34],[17,45,21],[13,43,15],[17,143,115],[9,54,34,4,55,35],[17,43,19],[17,44,15],[13,135,107],[17,54,34],[17,45,21],[17,43,15]],getRSBlocks:function(t,r){var e=g.getRsBlockTable(t,r);if(void 0===e)throw new Error("bad rs block @ typeNumber:"+t+"/errorCorrectLevel:"+r);for(var n=e.length/3,i=[],a=0;a<n;a++)for(var o=e[3*a+0],s=e[3*a+1],l=e[3*a+2],u=0;u<o;u++)i.push(new g(s,l));return i},getRsBlockTable:function(t,r){switch(r){case i.CorrectLevel.L:return g.RS_BLOCK_TABLE[4*(t-1)+0];case i.CorrectLevel.M:return g.RS_BLOCK_TABLE[4*(t-1)+1];case i.CorrectLevel.Q:return g.RS_BLOCK_TABLE[4*(t-1)+2];case i.CorrectLevel.H:return g.RS_BLOCK_TABLE[4*(t-1)+3];default:return}}};s.prototype={get:function(t){var r=Math.floor(t/8);return 1==(this.buffer[r]>>>7-t%8&1)},put:function(t,r){for(var e=0;e<r;e++)this.putBit(1==(t>>>r-1-e&1))},getLengthInBits:function(){return this.length},putBit:function(t){var r=Math.floor(this.length/8);this.buffer.length<=r&&this.buffer.push(0),t&&(this.buffer[r]|=128>>>this.length%8),this.length++}},i.CorrectLevel={L:1,M:0,Q:3,H:2},"function"==typeof define&&define.amd?define([],function(){return u}):"object"==typeof module&&module.exports&&(module.exports=u),r.QRCode=u,r.QRErrorCorrectLevel=i.CorrectLevel,this.QRCode=u,"string"==typeof(t=function(){return new l(r)})&&"undefined"!=typeof document&&document.attachEvent?document.attachEvent("onreadystatechange",function(){"complete"==document.readyState&&t()}):"undefined"!=typeof document&&document.addEventListener&&document.addEventListener("DOMContentLoaded",t,!1)}();
+
+
+        // Website ki main functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements ko select karna
+            const uploadContainer = document.getElementById('upload-container');
+            const fileInput = document.getElementById('file-input');
+            const shareContainer = document.getElementById('share-container');
+            const fileNameSpan = document.getElementById('file-name');
+            const fileSizeSpan = document.getElementById('file-size');
+            const qrCodeContainer = document.getElementById('qr-code');
+            const shareLinkInput = document.getElementById('share-link');
+            const copyBtn = document.getElementById('copy-btn');
+            const downloadLink = document.getElementById('download-link');
+            const themeToggle = document.getElementById('theme-checkbox');
+
+            let uploadedFile = null;
+
+            // --- Event Listeners ---
+
+            // File select karne ke liye container par click
+            uploadContainer.addEventListener('click', () => fileInput.click());
+
+            // Drag and Drop functionality
+            uploadContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadContainer.classList.add('dragover');
+            });
+
+            uploadContainer.addEventListener('dragleave', () => {
+                uploadContainer.classList.remove('dragover');
+            });
+
+            uploadContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadContainer.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            // File input se select karne par
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            // Copy button ki functionality
+            copyBtn.addEventListener('click', () => {
+                shareLinkInput.select();
+                document.execCommand('copy');
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                }, 2000);
+            });
+
+            // Theme toggle (Dark/Light mode)
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('light-mode');
+                // User ki choice ko save karna
+                if (document.body.classList.contains('light-mode')) {
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Page load par saved theme apply karna
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+                themeToggle.checked = true;
+            }
+
+            // --- Functions ---
+
+            /**
+             * File ko process karta hai aur share link banata hai
+             * @param {File} file - User dwara select ki gayi file
+             */
+            function handleFile(file) {
+                uploadedFile = file;
+
+                // UI update karna
+                uploadContainer.style.display = 'none';
+                shareContainer.style.display = 'block';
+                
+                // File info display karna
+                fileNameSpan.textContent = file.name;
+                fileSizeSpan.textContent = formatFileSize(file.size);
+
+                // FileReader API ka istemal karke file ko Data URL mein convert karna
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const fileDataURL = e.target.result;
+                    
+                    // Download link set karna
+                    downloadLink.href = fileDataURL;
+                    downloadLink.download = file.name;
+                    
+                    // "Shareable" link banana. Yeh actual link nahi hai, bas ek placeholder hai.
+                    // Asli P2P ke liye yahan WebRTC connection setup hota.
+                    const shareableLink = window.location.href + '#' + file.name;
+                    shareLinkInput.value = shareableLink;
+
+                    // QR Code generate karna
+                    generateQRCode(shareableLink);
+                };
+                
+                // File ko Data URL ke roop mein padhna
+                reader.readAsDataURL(file);
+            }
+
+            /**
+             * File size ko readable format (KB, MB, GB) mein convert karta hai
+             * @param {number} bytes - File ka size bytes mein
+             * @returns {string} - Formatted file size
+             */
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            /**
+             * Diye gaye text ke liye QR code generate karta hai
+             * @param {string} text - QR code mein encode karne wala text
+             */
+            function generateQRCode(text) {
+                qrCodeContainer.innerHTML = ''; // Purana QR code saaf karna
+                new QRCode(qrCodeContainer, {
+                    text: text,
+                    width: 180,
+                    height: 180,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+        });
+    </script>
+</body>
+</html>
